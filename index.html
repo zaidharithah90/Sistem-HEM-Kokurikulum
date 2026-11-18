@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit HEM dan Kokurikulum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Susun atur: sepanduk jabatan, menu tetap, peranan jabatan, dua unit dalam grid kad, aliran pertandingan, carta organisasi, takwim, hubungi. */
+:root{
+  --ink:#14232b;
+  --muted:#4d5f68;
+  --paper:#f4f7f7;
+  --card:#ffffff;
+  --line:#d5e0e2;
+  --brand:#0e5a6b;
+  --brand-soft:#e1eff1;
+  --gold:#c58a12;
+  --gold-soft:#fbf1dc;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#e6eef0; --muted:#a2b4ba; --paper:#0f1a1f; --card:#16252c; --line:#27404a;
+    --brand:#5fb7c9; --brand-soft:#173540; --gold:#e3ad45; --gold-soft:#33291a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#e6eef0; --muted:#a2b4ba; --paper:#0f1a1f; --card:#16252c; --line:#27404a;
+  --brand:#5fb7c9; --brand-soft:#173540; --gold:#e3ad45; --gold-soft:#33291a;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+a{color:var(--brand)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+.banner{background:var(--brand);color:#fff;padding:40px 0 34px;position:relative;overflow:hidden}
+:root[data-theme="dark"] .banner{color:#0f1a1f}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .banner{color:#0f1a1f}}
+.banner::after{content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;border:28px solid var(--gold);border-radius:50%;opacity:.35}
+.banner .org-name{font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:14px;opacity:.9}
+.banner h1{font-size:clamp(28px,5vw,46px);margin:8px 0 10px;max-width:20ch}
+.banner p{margin:0;max-width:62ch;font-size:18px;opacity:.95}
+
+nav{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+nav ul{list-style:none;margin:0 auto;padding:0 20px;max-width:1100px;display:flex;gap:4px;overflow-x:auto}
+nav a{display:block;padding:14px 14px;text-decoration:none;color:var(--ink);font-weight:600;white-space:nowrap;border-bottom:3px solid transparent}
+nav a:hover{border-bottom-color:var(--gold)}
+
+section{padding:52px 0}
+section + section{border-top:1px solid var(--line)}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.sec-head{display:grid;gap:8px;margin-bottom:28px;max-width:70ch}
+.sec-head h2{font-size:clamp(24px,3.4vw,34px)}
+.sec-head p{margin:0;color:var(--muted)}
+
+.intro{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.statement{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px}
+.statement h3{font-size:18px;color:var(--brand);margin-bottom:6px}
+.statement p{margin:0}
+
+/* Peranan jabatan: tiga lapis */
+.layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:22px}
+.layer{border-left:4px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;padding:14px 18px}
+.layer b{font-family:var(--display);display:block}
+.layer span{font-size:15px;color:var(--muted)}
+
+.lead{display:flex;gap:16px;align-items:center;background:var(--brand-soft);border-radius:10px;padding:16px 20px;margin-bottom:26px;flex-wrap:wrap}
+.lead .badge{font-family:var(--display);font-weight:800;background:var(--brand);color:var(--card);border-radius:8px;padding:8px 12px;font-size:15px}
+.lead p{margin:0;flex:1;min-width:240px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.fn{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--brand);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.fn.koko{border-top-color:var(--gold)}
+.fn .num{font-family:var(--display);font-weight:800;color:var(--muted);font-size:13px;letter-spacing:.05em}
+.fn h3{font-size:19px}
+.fn ul{margin:0;padding-left:18px;color:var(--muted)}
+.fn li{margin:2px 0}
+
+/* Aliran pertandingan */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:34px;counter-reset:step}
+.step{position:relative;background:var(--card);border:1px solid var(--line);padding:18px 18px 18px 18px;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.step:first-child{border-radius:10px 0 0 10px}
+.step:last-child{border-radius:0 10px 10px 0}
+.step + .step{border-left:0}
+.step .lvl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.step b{display:block;font-family:var(--display);font-size:20px;margin:2px 0}
+.step span{font-size:14px;color:var(--muted)}
+.step[aria-pressed="true"]{background:var(--gold);border-color:var(--gold)}
+.step[aria-pressed="true"] .lvl,.step[aria-pressed="true"] span,.step[aria-pressed="true"] b{color:#1d1404}
+.flow-detail{background:var(--gold-soft);border-radius:10px;padding:18px 22px;margin:-20px 0 34px}
+.flow-detail p{margin:0;max-width:72ch}
+@media (max-width:640px){
+  .flow{grid-template-columns:1fr 1fr}
+  .step,.step:first-child,.step:last-child{border-radius:0;border:1px solid var(--line)}
+}
+
+.org{display:grid;gap:14px;justify-items:center;text-align:center}
+.org .row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.org .box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 16px;min-width:200px}
+.org .box b{display:block;font-family:var(--display);font-size:15px}
+.org .box span{font-size:14px;color:var(--muted)}
+.org .box.top{border:2px solid var(--brand)}
+.org .box.out{border-style:dashed}
+.org .vline{width:2px;height:16px;background:var(--line)}
+
+.table-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-size:14px;letter-spacing:.03em;color:var(--muted);background:var(--brand-soft)}
+tr:last-child td{border-bottom:0}
+td.bulan{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:6px;vertical-align:middle}
+.tag.hem{background:var(--brand-soft);color:var(--brand)}
+.tag.koko{background:var(--gold-soft);color:var(--gold)}
+
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.contact .statement p + p{margin-top:4px}
+
+footer{background:var(--ink);color:var(--paper);padding:26px 0;font-size:15px}
+footer p{margin:0}
+</style>
+</head>
+<body>
+
+<header class="banner">
+  <div class="wrap">
+    <div class="org-name">Jabatan Pendidikan Negeri [Nama Negeri] · Sektor Pembangunan Murid</div>
+    <h1>Unit Hal Ehwal Murid dan Unit Kokurikulum</h1>
+    <p>Merancang, menyelaras dan memantau pelaksanaan dasar kebajikan, disiplin dan kokurikulum murid di semua sekolah dalam negeri.</p>
+  </div>
+</header>
+
+<nav aria-label="Menu utama">
+  <ul>
+    <li><a href="#pengenalan">Pengenalan</a></li>
+    <li><a href="#hem">Unit HEM</a></li>
+    <li><a href="#kokurikulum">Unit Kokurikulum</a></li>
+    <li><a href="#organisasi">Carta Organisasi</a></li>
+    <li><a href="#takwim">Takwim</a></li>
+    <li><a href="#hubungi">Hubungi</a></li>
+  </ul>
+</nav>
+
+<main>
+<section id="pengenalan">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Pengenalan</span>
+      <h2>Penghubung antara dasar kementerian dan sekolah</h2>
+      <p>Kedua-dua unit ini menerima dasar daripada Kementerian Pendidikan Malaysia, menterjemahkannya kepada panduan dan program, kemudian memastikan sekolah melaksanakannya dengan berkesan.</p>
+    </div>
+    <div class="intro">
+      <div class="statement">
+        <h3>Visi</h3>
+        <p>Pembangunan murid yang menyeluruh, selamat dan berdaya saing di setiap sekolah dalam negeri.</p>
+      </div>
+      <div class="statement">
+        <h3>Misi</h3>
+        <p>Memberi khidmat sokongan, bimbingan dan pemantauan yang cekap kepada sekolah dan pejabat pendidikan daerah.</p>
+      </div>
+      <div class="statement">
+        <h3>Piagam pelanggan</h3>
+        <p>[Contoh: Setiap aduan berkaitan murid akan diberi maklum balas dalam tempoh 3 hari bekerja.]</p>
+      </div>
+    </div>
+    <div class="layers" aria-label="Rantaian pelaksanaan">
+      <div class="layer"><b>Kementerian (KPM)</b><span>Menggubal dasar dan peruntukan</span></div>
+      <div class="layer"><b>Jabatan Pendidikan Negeri</b><span>Menyelaras dan memantau peringkat negeri</span></div>
+      <div class="layer"><b>Pejabat Pendidikan Daerah</b><span>Membimbing dan memantau sekolah</span></div>
+      <div class="layer"><b>Sekolah</b><span>Melaksanakan program untuk murid</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="hem">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Unit 1</span>
+      <h2>Unit Hal Ehwal Murid</h2>
+      <p>Memastikan kebajikan, disiplin, kesihatan dan keselamatan murid diurus mengikut dasar yang sama di semua sekolah.</p>
+    </div>
+    <div class="lead">
+      <span class="badge">Diketuai oleh</span>
+      <p><strong>Ketua Unit Hal Ehwal Murid</strong>, dibantu oleh Penolong Pengarah dan pegawai yang menjaga bidang disiplin, bantuan murid, psikologi dan kaunseling, serta kesihatan.</p>
+    </div>
+    <div class="grid">
+      <article class="fn">
+        <span class="num">FUNGSI 01</span>
+        <h3>Pengurusan disiplin</h3>
+        <ul>
+          <li>Memantau data salah laku murid dari semua sekolah</li>
+          <li>Mengendalikan kes berat seperti buli dan gangguan</li>
+          <li>Menyediakan laporan disiplin kepada KPM</li>
+          <li>Menyelaras tindakan bersama polis dan agensi lain</li>
+        </ul>
+      </article>
+      <article class="fn">
+        <span class="num">FUNGSI 02</span>
+        <h3>Bantuan dan kebajikan murid</h3>
+        <ul>
+          <li>Mengagih dan memantau peruntukan KWAPM, RMT dan SPBT</li>
+          <li>Menyelaras Bantuan Awal Persekolahan</li>
+          <li>Mengurus permohonan biasiswa</li>
+          <li>Mengaudit penggunaan bantuan di sekolah</li>
+        </ul>
+      </article>
+      <article class="fn">
+        <span class="num">FUNGSI 03</span>
+        <h3>Psikologi dan kaunseling</h3>
+        <ul>
+          <li>Membimbing guru bimbingan dan kaunseling sekolah</li>
+          <li>Menghantar pasukan intervensi semasa krisis</li>
+          <li>Menganjurkan program kerjaya peringkat negeri</li>
+        </ul>
+      </article>
+      <article class="fn">
+        <span class="num">FUNGSI 04</span>
+        <h3>Kesihatan dan keselamatan</h3>
+        <ul>
+          <li>Kerjasama dengan Jabatan Kesihatan Negeri</li>
+          <li>Memantau pelaksanaan Sekolah Selamat</li>
+          <li>Program pencegahan dadah dan jenayah</li>
+          <li>Menguruskan laporan kemalangan murid</li>
+        </ul>
+      </article>
+      <article class="fn">
+        <span class="num">FUNGSI 05</span>
+        <h3>Kehadiran dan keciciran</h3>
+        <ul>
+          <li>Memantau data kehadiran melalui APDM</li>
+          <li>Mengenal pasti sekolah dengan kadar ponteng tinggi</li>
+          <li>Program mengurangkan keciciran murid</li>
+        </ul>
+      </article>
+      <article class="fn">
+        <span class="num">FUNGSI 06</span>
+        <h3>Asrama</h3>
+        <ul>
+          <li>Memantau pengurusan asrama harian</li>
+          <li>Menyelaras kemasukan murid ke asrama</li>
+          <li>Memeriksa tahap keselamatan dan kebersihan</li>
+        </ul>
+      </article>
+      <article class="fn">
+        <span class="num">FUNGSI 07</span>
+        <h3>Latihan dan bimbingan</h3>
+        <ul>
+          <li>Taklimat dasar kepada Penolong Kanan HEM</li>
+          <li>Kursus untuk guru disiplin dan warden</li>
+          <li>Berkongsi amalan terbaik antara sekolah</li>
+        </ul>
+      </article>
+      <article class="fn">
+        <span class="num">FUNGSI 08</span>
+        <h3>Aduan dan pertanyaan awam</h3>
+        <ul>
+          <li>Menerima aduan ibu bapa berkaitan murid</li>
+          <li>Menyiasat dan memberi maklum balas</li>
+          <li>Menjawab pertanyaan media dan wakil rakyat</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="kokurikulum">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Unit 2</span>
+      <h2>Unit Kokurikulum</h2>
+      <p>Menyelaras aktiviti sukan, badan beruniform, kelab dan persatuan di semua sekolah, serta mengurus kejohanan dari peringkat daerah hingga kebangsaan.</p>
+    </div>
+    <div class="lead">
+      <span class="badge">Diketuai oleh</span>
+      <p><strong>Ketua Unit Kokurikulum</strong>, dibantu oleh Penolong Pengarah dan pegawai yang menjaga bidang sukan, badan beruniform, kelab dan persatuan, serta pentaksiran PAJSK.</p>
+    </div>
+
+    <h3 style="font-size:19px;margin-bottom:12px">Laluan pertandingan murid</h3>
+    <div class="flow" role="group" aria-label="Peringkat pertandingan">
+      <button class="step" aria-pressed="false" data-key="sekolah"><span class="lvl">Peringkat 1</span><b>Sekolah</b><span>Pemilihan atlet</span></button>
+      <button class="step" aria-pressed="true" data-key="mssd"><span class="lvl">Peringkat 2</span><b>MSSD</b><span>Majlis Sukan Sekolah Daerah</span></button>
+      <button class="step" aria-pressed="false" data-key="mssn"><span class="lvl">Peringkat 3</span><b>MSSN</b><span>Majlis Sukan Sekolah Negeri</span></button>
+      <button class="step" aria-pressed="false" data-key="mssm"><span class="lvl">Peringkat 4</span><b>MSSM</b><span>Majlis Sukan Sekolah Malaysia</span></button>
+    </div>
+    <div class="flow-detail" aria-live="polite">
+      <p id="flow-text"><strong>Peranan jabatan:</strong> Pejabat Pendidikan Daerah menganjurkan kejohanan MSSD. Jabatan menetapkan tarikh, peraturan dan kelayakan supaya semua daerah seragam.</p>
+    </div>
+
+    <div class="grid">
+      <article class="fn koko">
+        <span class="num">FUNGSI 01</span>
+        <h3>Dasar dan panduan</h3>
+        <ul>
+          <li>Menyebarkan dasar kokurikulum KPM kepada sekolah</li>
+          <li>Menyediakan garis panduan dan surat siaran</li>
+          <li>Memantau pelaksanaan dasar 1Murid 1Sukan</li>
+        </ul>
+      </article>
+      <article class="fn koko">
+        <span class="num">FUNGSI 02</span>
+        <h3>Kejohanan dan kontinjen</h3>
+        <ul>
+          <li>Menganjurkan kejohanan MSSN</li>
+          <li>Memilih dan melatih kontinjen negeri ke MSSM</li>
+          <li>Melantik pengurus pasukan dan jurulatih</li>
+        </ul>
+      </article>
+      <article class="fn koko">
+        <span class="num">FUNGSI 03</span>
+        <h3>Pentaksiran PAJSK</h3>
+        <ul>
+          <li>Membimbing sekolah merekod markah PAJSK</li>
+          <li>Memantau dan mengesahkan data dalam sistem</li>
+          <li>Menyemak aduan berkaitan markah kokurikulum</li>
+        </ul>
+      </article>
+      <article class="fn koko">
+        <span class="num">FUNGSI 04</span>
+        <h3>Badan beruniform, kelab dan persatuan</h3>
+        <ul>
+          <li>Perkhemahan dan perbarisan peringkat negeri</li>
+          <li>Pertandingan kelab dan persatuan</li>
+          <li>Kerjasama dengan persatuan induk</li>
+        </ul>
+      </article>
+      <article class="fn koko">
+        <span class="num">FUNGSI 05</span>
+        <h3>Pembangunan bakat</h3>
+        <ul>
+          <li>Kursus kejurulatihan dan pengadilan untuk guru</li>
+          <li>Pusat latihan dan program pembangunan atlet</li>
+          <li>Pengesanan bakat murid dari sekolah</li>
+        </ul>
+      </article>
+      <article class="fn koko">
+        <span class="num">FUNGSI 06</span>
+        <h3>Peruntukan dan pengiktirafan</h3>
+        <ul>
+          <li>Mengagih peruntukan kokurikulum kepada sekolah</li>
+          <li>Anugerah Sukan dan Kokurikulum peringkat negeri</li>
+          <li>Merekod pencapaian kontinjen negeri</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="organisasi">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Struktur</span>
+      <h2>Carta organisasi</h2>
+      <p>Gantikan teks dalam kurungan dengan nama pegawai dan jawatan sebenar di jabatan anda.</p>
+    </div>
+    <div class="org">
+      <div class="box top"><b>Pengarah Pendidikan Negeri</b><span>[Nama]</span></div>
+      <div class="vline"></div>
+      <div class="box"><b>Ketua Sektor Pembangunan Murid</b><span>[Nama]</span></div>
+      <div class="vline"></div>
+      <div class="row">
+        <div class="box"><b>Ketua Unit Hal Ehwal Murid</b><span>[Nama]</span></div>
+        <div class="box"><b>Ketua Unit Kokurikulum</b><span>[Nama]</span></div>
+      </div>
+      <div class="vline"></div>
+      <div class="row">
+        <div class="box"><b>Penolong Pengarah Disiplin</b><span>[Nama]</span></div>
+        <div class="box"><b>Penolong Pengarah Bantuan Murid</b><span>[Nama]</span></div>
+        <div class="box"><b>Penolong Pengarah Sukan</b><span>[Nama]</span></div>
+        <div class="box"><b>Penolong Pengarah Beruniform dan Persatuan</b><span>[Nama]</span></div>
+      </div>
+      <div class="vline"></div>
+      <div class="row">
+        <div class="box"><b>Pegawai dan Penolong Pegawai</b><span>[Bilangan] orang</span></div>
+        <div class="box out"><b>Pejabat Pendidikan Daerah</b><span>Rakan pelaksana</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="takwim">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Takwim</span>
+      <h2>Contoh aktiviti utama sepanjang tahun</h2>
+      <p>Ini contoh sahaja. Sesuaikan dengan takwim sebenar jabatan anda.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bulan</th><th>Aktiviti</th></tr></thead>
+        <tbody>
+          <tr><td class="bulan">Jan – Feb</td><td>Taklimat dasar kepada Penolong Kanan sekolah <span class="tag hem">HEM</span> <span class="tag koko">KOKO</span>, agihan peruntukan bantuan murid <span class="tag hem">HEM</span></td></tr>
+          <tr><td class="bulan">Mac – Apr</td><td>Kejohanan MSSD di setiap daerah <span class="tag koko">KOKO</span>, pemantauan pelaksanaan RMT <span class="tag hem">HEM</span></td></tr>
+          <tr><td class="bulan">Mei – Jun</td><td>Kejohanan MSSN <span class="tag koko">KOKO</span>, kursus guru disiplin <span class="tag hem">HEM</span></td></tr>
+          <tr><td class="bulan">Jul – Ogos</td><td>Kontinjen negeri ke MSSM <span class="tag koko">KOKO</span>, perkhemahan beruniform peringkat negeri <span class="tag koko">KOKO</span></td></tr>
+          <tr><td class="bulan">Sep – Okt</td><td>Pemantauan data PAJSK <span class="tag koko">KOKO</span>, audit KWAPM dan SPBT <span class="tag hem">HEM</span></td></tr>
+          <tr><td class="bulan">Nov – Dis</td><td>Anugerah Sukan dan Kokurikulum negeri <span class="tag koko">KOKO</span>, laporan tahunan disiplin dan kebajikan murid <span class="tag hem">HEM</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="hubungi">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Hubungi</span>
+      <h2>Hubungi kami</h2>
+      <p>Pihak sekolah, ibu bapa dan orang awam boleh menghubungi unit berkenaan pada waktu pejabat.</p>
+    </div>
+    <div class="contact">
+      <div class="statement">
+        <h3>Unit Hal Ehwal Murid</h3>
+        <p>Telefon: [No. telefon]</p>
+        <p>E-mel: [alamat e-mel]</p>
+      </div>
+      <div class="statement">
+        <h3>Unit Kokurikulum</h3>
+        <p>Telefon: [No. telefon]</p>
+        <p>E-mel: [alamat e-mel]</p>
+      </div>
+      <div class="statement">
+        <h3>Alamat dan waktu pejabat</h3>
+        <p>[Alamat penuh jabatan]</p>
+        <p>Isnin – Jumaat: 8.00 pagi – 5.00 petang</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© Jabatan Pendidikan Negeri [Nama Negeri] · Sektor Pembangunan Murid</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var text = {
+    sekolah: "<strong>Peranan jabatan:</strong> Sekolah memilih atlet melalui Hari Sukan dan latihan. Jabatan menyediakan garis panduan pemilihan dan memastikan dasar 1Murid 1Sukan dilaksanakan.",
+    mssd: "<strong>Peranan jabatan:</strong> Pejabat Pendidikan Daerah menganjurkan kejohanan MSSD. Jabatan menetapkan tarikh, peraturan dan kelayakan supaya semua daerah seragam.",
+    mssn: "<strong>Peranan jabatan:</strong> Jabatan menganjurkan sendiri kejohanan MSSN, melantik pegawai teknik dan memilih atlet terbaik untuk kontinjen negeri.",
+    mssm: "<strong>Peranan jabatan:</strong> Jabatan menghantar dan mengurus kontinjen negeri ke kejohanan MSSM, termasuk latihan pusat, pengangkutan, penginapan dan kebajikan atlet."
+  };
+  var steps = document.querySelectorAll('.step');
+  var out = document.getElementById('flow-text');
+  steps.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      steps.forEach(function(b){ b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+      out.innerHTML = text[btn.getAttribute('data-key')];
+    });
+  });
+})();
+</script>
+</body>
+</html>
